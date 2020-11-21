@@ -22,7 +22,8 @@ export function activate(context: vscode.ExtensionContext): IMementoExplorerExte
         )
     );
 
-    // To serve as an example of what needs to be returned from `activate()`, look here:
+    // Here is an example of what to return from `activate()`. You can literally copy and paste just this code, and it will work.
+    // Note though, we highly recommend exporting only in test scenarios--for example, you can use a magic environment variable to gate the export.
     return {
         memento: {
             globalState: context.globalState,
