@@ -16,7 +16,7 @@ Upon satisfying the requirements above, simply open the command palette (<kbd>Cm
 
 ## Disclaimer
 
-Use this extension at your own risk! Manipulating an extension's `Memento` could have a wide range unintended side effects. Do not use this unless you know what you're doing.
+Use this extension at your own risk! Manipulating an extension's `Memento` could have a wide range of unintended side effects. Do not use this unless you know what you're doing.
 
 ## Privacy Policy
 
