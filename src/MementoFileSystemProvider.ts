@@ -6,9 +6,6 @@ import { IMementoExplorerExtension, MementoType } from './IMementoExplorerExtens
 import { detailedDiff } from 'deep-object-diff';
 
 export class MementoFileSystemProvider implements vscode.FileSystemProvider {
-    private readonly changeEmitter: vscode.EventEmitter<vscode.FileChangeEvent[]> = new vscode.EventEmitter<vscode.FileChangeEvent[]>();
-    public readonly onDidChangeFile: vscode.Event<vscode.FileChangeEvent[]> = this.changeEmitter.event;
-
     public async stat(uri: vscode.Uri): Promise<vscode.FileStat> {
         const memento = await getMemento(uri);
 
@@ -33,6 +30,13 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
 
         const diff = <DetailedDiff>detailedDiff(oldValue, newValue);
 
+        // Log some info on what we're about to do
+        const outputChannel = vscode.window.createOutputChannel('Memento Explorer');
+        outputChannel.appendLine(`>>>> Attempting updates to '${uri.authority}' '${uri.path}' memento <<<<`);
+        outputChannel.appendLine(JSON.stringify(diff, undefined, 4));
+        outputChannel.appendLine('');
+
+        // Perform the updates
         for (const addedKey of Object.keys(diff.added)) {
             await memento.update(addedKey, (<any>diff.added)[addedKey]);
         }
@@ -47,26 +51,30 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
     }
 
     //#region Methods not valid for `MementoFileSystemProvider`
+    // The change emitter is not actually used
+    private readonly changeEmitter: vscode.EventEmitter<vscode.FileChangeEvent[]> = new vscode.EventEmitter<vscode.FileChangeEvent[]>();
+    public readonly onDidChangeFile: vscode.Event<vscode.FileChangeEvent[]> = this.changeEmitter.event;
+
     public watch(uri: vscode.Uri, options: { recursive: boolean; excludes: string[]; }): vscode.Disposable {
         throw new Error('Method not implemented.');
     }
 
-    public readDirectory(uri: vscode.Uri): [string, vscode.FileType][] | Thenable<[string, vscode.FileType][]> {
+    public async readDirectory(uri: vscode.Uri): Promise<[string, vscode.FileType][]> {
         throw new Error('Method not implemented.');
     }
 
-    public createDirectory(uri: vscode.Uri): void | Thenable<void> {
+    public async createDirectory(uri: vscode.Uri): Promise<void> {
         throw new Error('Method not implemented.');
     }
 
-    public delete(uri: vscode.Uri, options: { recursive: boolean; }): void | Thenable<void> {
+    public async delete(uri: vscode.Uri, options: { recursive: boolean; }): Promise<void> {
         throw new Error('Method not implemented.');
     }
 
-    public rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean; }): void | Thenable<void> {
+    public async rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean; }): Promise<void> {
         throw new Error('Method not implemented.');
     }
-    //#endregion MementoFileSystemProvider
+    //#endregion Methods not valid for `MementoFileSystemProvider`
 }
 
 async function getMemento(uri: vscode.Uri): Promise<(vscode.Memento & { _value: any })> {

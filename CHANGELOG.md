@@ -1,9 +1,4 @@
-# Change Log
+## 20 November 2020
 
-All notable changes to the "memento-explorer" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+### Added
+* Initial release!

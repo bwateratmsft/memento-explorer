@@ -22,6 +22,7 @@ export function activate(context: vscode.ExtensionContext): IMementoExplorerExte
         )
     );
 
+    // To serve as an example of what needs to be returned from `activate()`, look here:
     return {
         memento: {
             globalState: context.globalState,
