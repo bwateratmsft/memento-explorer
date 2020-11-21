@@ -1,30 +1,53 @@
 // Copyright Brandon Waterloo. All rights reserved.
 // Licensed under the MIT license.
 
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { IMementoExplorerExtension } from './IMementoExplorerExtension';
+import { MementoFileSystemProvider } from './MementoFileSystemProvider';
+import { openMemento } from './openMemento';
+import { UserCancelledError } from './UserCancelledError';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext): IMementoExplorerExtension {
+    registerCommand(context, 'memento-explorer.openGlobalMemento', () => openMemento('global'));
+    registerCommand(context, 'memento-explorer.openWorkspaceMemento', () => openMemento('workspace'));
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "memento-explorer" is now active!');
+    context.subscriptions.push(
+        vscode.workspace.registerFileSystemProvider(
+            'memento',
+            new MementoFileSystemProvider(),
+            {
+                isCaseSensitive: true,
+                isReadonly: false,
+            }
+        )
+    );
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('memento-explorer.helloWorld', () => {
-        // The code you place here will be executed every time your command is executed
-
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World from Memento Explorer!');
-    });
-
-    context.subscriptions.push(disposable);
+    return {
+        memento: {
+            globalState: context.globalState,
+            workspaceState: context.workspaceState,
+        },
+    };
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {}
+
+function registerCommand(context: vscode.ExtensionContext, commandId: string, callback: () => Promise<void>): void {
+    context.subscriptions.push(
+        vscode.commands.registerCommand(commandId, async () => {
+            try {
+                await callback();
+            } catch (e) {
+                if (e instanceof UserCancelledError) {
+                    return;
+                }
+
+                const error: { message: string } = {
+                    message: e.message || e.toString(),
+                };
+
+                vscode.window.showErrorMessage(error.message);
+            }
+        })
+    );
+}

@@ -21,13 +21,19 @@
     "preview": true,
     "main": "./dist/extension.js",
     "activationEvents": [
-        "onCommand:memento-explorer.helloWorld"
+        "onCommand:memento-explorer.openGlobalMemento",
+        "onCommand:memento-explorer.openWorkspaceMemento",
+        "onFileSystem:memento"
     ],
     "contributes": {
         "commands": [
             {
-                "command": "memento-explorer.helloWorld",
-                "title": "Hello World"
+                "command": "memento-explorer.openGlobalMemento",
+                "title": "Open Global Memento..."
+            },
+            {
+                "command": "memento-explorer.openWorkspaceMemento",
+                "title": "Open Workspace Memento..."
             }
         ]
     },
