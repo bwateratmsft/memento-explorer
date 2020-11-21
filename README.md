@@ -12,7 +12,7 @@ Please note that it is _highly_ recommended to export the `Memento` only for tes
 
 ## Usage
 
-Upon satisfying the requirements above, simply open the command palette (<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) and run either "Memento Explorer: Open Global Memento..." or "Memento Explorer: Open Workspace Memento...", and follow the prompts. Once a `Memento` is opened, it will appear as a JSON file. You can edit this file, adding, modifying, or removing properties. When you save the file, all the `Memento` updates will be committed. Your extension should immediately see those updates. The "Output", under the "Memento Explorer" tab, will show what changes have been made.
+Upon satisfying the requirements above, simply open the command palette (<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) and run either "Memento Explorer: Open Global Memento..." or "Memento Explorer: Open Workspace Memento...", and follow the prompts. Once a `Memento` is opened, it will appear as a JSON file. You can edit this file, adding, modifying, or removing properties. When you save the file, all the `Memento` updates will be committed. Your extension should immediately see those updates. In the "Output" pane, under the "Memento Explorer" tab, the extension will show what changes have been made.
 
 ## Disclaimer
 
