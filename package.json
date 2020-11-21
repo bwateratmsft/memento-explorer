@@ -1,7 +1,7 @@
 {
     "name": "memento-explorer",
     "publisher": "bwater",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "displayName": "Memento Explorer",
     "description": "View and modify extension mementos to simplify extension authoring",
     "license": "SEE LICENSE IN LICENSE",
