@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext): IMementoExplorerExte
     };
 }
 
-export function deactivate() {}
+export function deactivate(): void {}
 
 function registerCommand(context: vscode.ExtensionContext, commandId: string, callback: () => Promise<void>): void {
     context.subscriptions.push(
