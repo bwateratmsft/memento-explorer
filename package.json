@@ -29,11 +29,13 @@
         "commands": [
             {
                 "command": "memento-explorer.openGlobalMemento",
-                "title": "Open Global Memento..."
+                "title": "Open Global Memento...",
+                "category": "Memento Explorer"
             },
             {
                 "command": "memento-explorer.openWorkspaceMemento",
-                "title": "Open Workspace Memento..."
+                "title": "Open Workspace Memento...",
+                "category": "Memento Explorer"
             }
         ]
     },
