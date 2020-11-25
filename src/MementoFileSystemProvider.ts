@@ -2,8 +2,10 @@
 // Licensed under the MIT license.
 
 import * as vscode from 'vscode';
-import { IMementoExplorerExtension, MementoType } from './IMementoExplorerExtension';
+import { IMementoExplorerExtension } from './IMementoExplorerExtension';
 import { detailedDiff } from 'deep-object-diff';
+import { InternalMemento, MementoType, outputChannel } from './constants';
+
 
 export class MementoFileSystemProvider implements vscode.FileSystemProvider {
     public async stat(uri: vscode.Uri): Promise<vscode.FileStat> {
@@ -31,9 +33,9 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
         const diff = <DetailedDiff>detailedDiff(oldValue, newValue);
 
         // Log some info on what we're about to do
-        const outputChannel = vscode.window.createOutputChannel('Memento Explorer');
-        outputChannel.appendLine(`>>>> Attempting updates to '${uri.authority}' '${uri.path}' memento <<<<`);
-        outputChannel.appendLine(JSON.stringify(diff, undefined, 4));
+        outputChannel.show();
+        outputChannel.appendLine(`>>>> Attempting updates to '${uri.authority}' '${uri.path.replace(/^\//i, '')}' memento <<<<`);
+        outputChannel.appendLine(JSON.stringify(diff, undefined, 4)); // TODO: JSON.stringify does not include deleted items as the value is undefined there
         outputChannel.appendLine('');
 
         // Perform the updates
@@ -77,11 +79,11 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
     //#endregion Methods not valid for `MementoFileSystemProvider`
 }
 
-async function getMemento(uri: vscode.Uri): Promise<(vscode.Memento & { _value: any })> {
+async function getMemento(uri: vscode.Uri): Promise<InternalMemento> {
     const extensionId = uri.authority;
-    const type: MementoType = <MementoType>uri.path;
+    const type: MementoType = <MementoType>uri.path.replace(/^\//i, '');
 
-    const extension = await vscode.extensions.getExtension<IMementoExplorerExtension>(extensionId);
+    const extension = vscode.extensions.getExtension<IMementoExplorerExtension>(extensionId);
     if (!extension) {
         throw new Error(`Extension '${extensionId}' could not be found`);
     }
@@ -92,11 +94,11 @@ async function getMemento(uri: vscode.Uri): Promise<(vscode.Memento & { _value: 
 
     if (type === 'global') {
         if (extension.exports?.memento?.globalState) {
-            return <(vscode.Memento & { _value: object })>extension.exports.memento.globalState;
+            return <InternalMemento>extension.exports.memento.globalState;
         }
     } else {
         if (extension.exports?.memento?.workspaceState) {
-            return <(vscode.Memento & { _value: object })>extension.exports.memento.workspaceState;
+            return <InternalMemento>extension.exports.memento.workspaceState;
         }
     }
 

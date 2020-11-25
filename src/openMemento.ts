@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import * as vscode from 'vscode';
-import { MementoType } from './IMementoExplorerExtension';
+import { MementoType } from './constants';
 import { UserCancelledError } from './UserCancelledError';
 
 export async function openMemento(type: MementoType): Promise<void> {
@@ -10,7 +10,8 @@ export async function openMemento(type: MementoType): Promise<void> {
     const uri = getExtensionMementoUri(extensionId, type);
     const document = await vscode.workspace.openTextDocument(uri);
 
-    void vscode.window.showTextDocument(document);
+    await vscode.window.showTextDocument(document);
+    await vscode.languages.setTextDocumentLanguage(document, 'json'); // TODO: when opening the memento directly from URI, this doesn't get set
 }
 
 interface ExtensionQuickPickItem extends vscode.QuickPickItem {
@@ -22,6 +23,7 @@ async function showExtensionQuickPick(): Promise<string> {
         getExtensionQuickPickItems(),
         {
             placeHolder: 'Choose an extension',
+            matchOnDetail: true,
         }
     );
 
@@ -34,12 +36,14 @@ async function showExtensionQuickPick(): Promise<string> {
 
 function getExtensionQuickPickItems(): ExtensionQuickPickItem[] {
     return vscode.extensions.all
-        .filter(e => e.exports !== undefined || !e.isActive)
-        .map(e => ({ 
-            label: e.packageJSON?.name || e.id,
-            detail: e.id,
-            extensionId: e.id,
-        }));
+        .filter(e => !e.isActive || e.exports !== undefined)
+        .map(e => ({
+                label: e.packageJSON?.displayName || e.packageJSON?.name || e.id,
+                detail: e.id,
+                extensionId: e.id,
+            })
+        )
+        .sort((a, b) => a.extensionId.localeCompare(b.extensionId));
 }
 
 function getExtensionMementoUri(extensionId: string, memento: MementoType): vscode.Uri {

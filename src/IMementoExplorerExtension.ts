@@ -14,5 +14,3 @@ export interface IMementoExplorerExtension {
         readonly workspaceState?: vscode.Memento;
     };
 }
-
-export type MementoType = 'global' | 'workspace';
