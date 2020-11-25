@@ -4,7 +4,6 @@
 import * as vscode from 'vscode';
 import { InternalMemento } from './constants';
 import { IMementoExplorerExtension } from './IMementoExplorerExtension';
-import { LocalMementoWatcher } from './LocalMementoWatcher';
 import { MementoFileSystemProvider } from './MementoFileSystemProvider';
 import { openMemento } from './openMemento';
 import { UserCancelledError } from './UserCancelledError';
@@ -23,8 +22,6 @@ export function activate(context: vscode.ExtensionContext): IMementoExplorerExte
             }
         )
     );
-
-    context.subscriptions.push(new LocalMementoWatcher(<InternalMemento><unknown>context.globalState));
 
     // Here is an example of what to return from `activate()`. You can literally copy and paste just this code, and it will work.
     // Note though, we highly recommend exporting only in test scenarios--for example, you can use a magic environment variable to gate the export.
