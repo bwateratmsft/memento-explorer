@@ -1,15 +1,17 @@
 {
     "name": "memento-explorer",
     "publisher": "bwater",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "displayName": "Memento Explorer",
     "description": "View and modify extension mementos to simplify extension authoring",
+    "icon": "resources/icon.png",
     "license": "SEE LICENSE IN LICENSE",
     "categories": [
         "Debuggers"
     ],
     "keywords": [
-        "memento"
+        "memento",
+        "extension development"
     ],
     "repository": {
         "type": "git",

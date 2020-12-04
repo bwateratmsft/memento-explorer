@@ -1,4 +1,4 @@
-# Memento Explorer for Visual Studio Code
+# Memento Explorer for Visual Studio Code [![Version](https://vsmarketplacebadge.apphb.com/version/bwater.memento-explorer.svg)](https://marketplace.visualstudio.com/items?itemName=bwater.memento-explorer)
 
 If you're an extension author for Visual Studio Code, chances are you've used `Memento`. These allow for the storage of local state, but unfortunately they can be very difficult to manage.
 
