@@ -6,7 +6,6 @@ import { IMementoExplorerExtension } from './IMementoExplorerExtension';
 import { detailedDiff } from 'deep-object-diff';
 import { InternalMemento, MementoType, outputChannel } from './constants';
 
-
 export class MementoFileSystemProvider implements vscode.FileSystemProvider {
     public async stat(uri: vscode.Uri): Promise<vscode.FileStat> {
         const memento = await getMemento(uri);
