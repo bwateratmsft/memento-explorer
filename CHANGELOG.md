@@ -1,4 +1,4 @@
-## 20 November 2020
+## v0.1.0 (4 December 2020)
 
 ### Added
 * Initial release!
