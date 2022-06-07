@@ -34,7 +34,7 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
         // Log some info on what we're about to do
         outputChannel.show();
         outputChannel.appendLine(`>>>> Attempting updates to '${uri.authority}' '${uri.path.replace(/^\//i, '')}' memento <<<<`);
-        outputChannel.appendLine(JSON.stringify(diff, undefined, 4)); // TODO: JSON.stringify does not include deleted items as the value is undefined there
+        outputChannel.appendLine(JSON.stringify(diff, undefinedToNull, 4));
         outputChannel.appendLine('');
 
         // Perform the updates
@@ -117,6 +117,12 @@ function uint8ArrayJsonToObject(array: Uint8Array): object {
     const json = Buffer.from(array).toString('utf8');
 
     return JSON.parse(json);
+}
+
+function undefinedToNull(k: string, v: unknown): unknown {
+    return v === undefined ?
+        null :
+        v;
 }
 
 interface DetailedDiff {
