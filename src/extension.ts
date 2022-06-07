@@ -45,7 +45,7 @@ function registerCommand(context: vscode.ExtensionContext, commandId: string, ca
                 }
 
                 const error: { message: string } = {
-                    message: e.message || e.toString(),
+                    message: (e as any).message || (e as any).toString(),
                 };
 
                 vscode.window.showErrorMessage(error.message);
