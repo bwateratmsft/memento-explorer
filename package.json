@@ -71,7 +71,7 @@
         "webpack-cli": "^4.6.0"
     },
     "dependencies": {
-        "deep-object-diff": "^1.1.0"
+        "deep-object-diff": "^1.1.9"
     },
     "engines": {
         "vscode": "^1.66.0"
