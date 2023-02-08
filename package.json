@@ -44,7 +44,7 @@
         "compile": "webpack --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
         "watch": "webpack --watch --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
         "package": "webpack --mode production --config ./build/node-extension.webpack.config.js",
-        "vsix": "node ./node_modules/vsce/out/vsce package",
+        "vsix": "vsce package",
         "test-compile": "tsc -p ./",
         "test-watch": "tsc -watch -p ./",
         "pretest": "npm run test-compile && npm run lint",
