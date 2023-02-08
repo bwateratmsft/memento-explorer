@@ -14,19 +14,19 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
             type: vscode.FileType.File,
             ctime: 0,
             mtime: Date.now(),
-            size: JSON.stringify(memento._value, undefined, 4).length,
+            size: JSON.stringify(memento.f, undefined, 4).length,
         };
     }
 
     public async readFile(uri: vscode.Uri): Promise<Uint8Array> {
         const memento = await getMemento(uri);
 
-        return objectToJsonUint8Array(memento._value);
+        return objectToJsonUint8Array(memento.f);
     }
 
     public async writeFile(uri: vscode.Uri, content: Uint8Array, options: { create: boolean; overwrite: boolean; }): Promise<void> {
         const memento = await getMemento(uri);
-        const oldValue = memento._value;
+        const oldValue = memento.f;
         const newValue = uint8ArrayJsonToObject(content);
 
         const diff = <DetailedDiff>detailedDiff(oldValue, newValue);
