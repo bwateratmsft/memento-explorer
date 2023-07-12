@@ -27,7 +27,7 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
     public async writeFile(uri: vscode.Uri, content: Uint8Array, options: { create: boolean; overwrite: boolean; }): Promise<void> {
         const memento = await getMemento(uri);
         const oldValue = memento.f;
-        const newValue = uint8ArrayJsonToObject(content);
+        const newValue = uint8ArrayJsonToObject(content) as Record<string, unknown>;
 
         const diff = <DetailedDiff>detailedDiff(oldValue, newValue);
 
@@ -38,16 +38,16 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
         outputChannel.appendLine('');
 
         // Perform the updates
+        for (const deletedKey of Object.keys(diff.deleted)) {
+            await memento.update(deletedKey, undefined);
+        }
+
         for (const addedKey of Object.keys(diff.added)) {
-            await memento.update(addedKey, (<any>diff.added)[addedKey]);
+            await memento.update(addedKey, newValue[addedKey]);
         }
 
         for (const updatedKey of Object.keys(diff.updated)) {
-            await memento.update(updatedKey, (<any>diff.updated)[updatedKey]);
-        }
-
-        for (const deletedKey of Object.keys(diff.deleted)) {
-            await memento.update(deletedKey, undefined);
+            await memento.update(updatedKey, newValue[updatedKey]);
         }
     }
 
