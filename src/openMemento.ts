@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import * as vscode from 'vscode';
-import { MementoType } from './constants';
+import type { MementoType } from './constants';
 
 export async function openMemento(type: MementoType): Promise<void> {
     const extensionId = await showExtensionQuickPick();
@@ -21,7 +21,7 @@ async function showExtensionQuickPick(): Promise<string> {
     const pick = await vscode.window.showQuickPick(
         getExtensionQuickPickItems(),
         {
-            placeHolder: 'Choose an extension',
+            placeHolder: vscode.l10n.t('Choose an extension'),
             matchOnDetail: true,
         }
     );
