@@ -21,7 +21,7 @@
         "url": "https://github.com/bwateratmsft/memento-explorer/issues"
     },
     "preview": true,
-    "main": "./dist/extension.js",
+    "main": "./dist/extension.bundle.js",
     "activationEvents": [
         "onFileSystem:memento"
     ],
