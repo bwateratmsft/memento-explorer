@@ -7,4 +7,4 @@ export type MementoType = 'global' | 'workspace';
 
 export type InternalMemento = vscode.Memento & { f: any };
 
-export const outputChannel = vscode.window.createOutputChannel('Memento Explorer');
+export const outputChannel = vscode.window.createOutputChannel('Memento Explorer', { log: true });

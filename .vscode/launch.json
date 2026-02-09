@@ -10,25 +10,15 @@
             "type": "extensionHost",
             "request": "launch",
             "args": [
-                "--extensionDevelopmentPath=${workspaceFolder}"
-            ],
-            "outFiles": [
-                "${workspaceFolder}/dist/**/*.js"
-            ],
-            "preLaunchTask": "${defaultBuildTask}"
-        },
-        {
-            "name": "Extension Tests",
-            "type": "extensionHost",
-            "request": "launch",
-            "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}",
-                "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
             ],
+            "env": {
+                "DEBUGTELEMETRY": "1",
+            },
             "outFiles": [
-                "${workspaceFolder}/out/test/**/*.js"
+                "${workspaceFolder}/dist/**/*.{js,mjs,cjs}",
             ],
-            "preLaunchTask": "npm: test-watch"
-        }
-    ]
+            "preLaunchTask": "Watch: ESBuild",
+        },
+    ],
 }

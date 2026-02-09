@@ -3,7 +3,6 @@
 
 import * as vscode from 'vscode';
 import { MementoType } from './constants';
-import { UserCancelledError } from './UserCancelledError';
 
 export async function openMemento(type: MementoType): Promise<void> {
     const extensionId = await showExtensionQuickPick();
@@ -28,7 +27,7 @@ async function showExtensionQuickPick(): Promise<string> {
     );
 
     if (pick === undefined) {
-        throw new UserCancelledError();
+        throw new vscode.CancellationError();
     }
 
     return pick.extensionId;
@@ -38,10 +37,10 @@ function getExtensionQuickPickItems(): ExtensionQuickPickItem[] {
     return vscode.extensions.all
         .filter(e => !e.isActive || e.exports !== undefined)
         .map(e => ({
-                label: e.packageJSON?.displayName || e.packageJSON?.name || e.id,
-                detail: e.id,
-                extensionId: e.id,
-            })
+            label: e.packageJSON?.displayName || e.packageJSON?.name || e.id,
+            detail: e.id,
+            extensionId: e.id,
+        })
         )
         .sort((a, b) => a.extensionId.localeCompare(b.extensionId));
 }
