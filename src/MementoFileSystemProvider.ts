@@ -1,10 +1,10 @@
 // Copyright Brandon Waterloo. All rights reserved.
 // Licensed under the MIT license.
 
-import * as vscode from 'vscode';
-import { IMementoExplorerExtension } from './IMementoExplorerExtension';
 import { detailedDiff } from 'deep-object-diff';
+import * as vscode from 'vscode';
 import { InternalMemento, MementoType, outputChannel } from './constants';
+import type { IMementoExplorerExtension } from './IMementoExplorerExtension';
 
 export class MementoFileSystemProvider implements vscode.FileSystemProvider {
     public async stat(uri: vscode.Uri): Promise<vscode.FileStat> {
@@ -33,7 +33,7 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
 
         // Log some info on what we're about to do
         outputChannel.show();
-        outputChannel.appendLine(`>>>> Attempting updates to '${uri.authority}' '${uri.path.replace(/^\//i, '')}' memento <<<<`);
+        outputChannel.appendLine(vscode.l10n.t(`>>>> Attempting updates to '{0}' '{1}' memento <<<<`, uri.authority, uri.path.replace(/^\//i, '')));
         outputChannel.appendLine(JSON.stringify(diff, undefinedToNull, 4));
         outputChannel.appendLine('');
 
@@ -84,7 +84,7 @@ async function getMemento(uri: vscode.Uri): Promise<InternalMemento> {
 
     const extension = vscode.extensions.getExtension<IMementoExplorerExtension>(extensionId);
     if (!extension) {
-        throw new Error(`Extension '${extensionId}' could not be found`);
+        throw new Error(vscode.l10n.t(`Extension '{0}' could not be found`, extensionId));
     }
 
     if (!extension.isActive) {
@@ -101,7 +101,7 @@ async function getMemento(uri: vscode.Uri): Promise<InternalMemento> {
         }
     }
 
-    throw new Error(`Extension '${extensionId}' does not export \`Memento\` of type '${type}'`);
+    throw new Error(vscode.l10n.t(`Extension '{0}' does not export Memento of type '{1}'`, extensionId, type));
 }
 
 function objectToJsonUint8Array(obj: object): Uint8Array {

@@ -1,7 +1,7 @@
 // Copyright Brandon Waterloo. All rights reserved.
 // Licensed under the MIT license.
 
-import * as vscode from 'vscode';
+import type * as vscode from 'vscode';
 
 /**
  * @description In order to use the Memento Explorer extension, an extension's `activate()` method must return an object implementing this interface. If desired, the extension can choose to exclude one of the `Memento` types (global or workspace).
