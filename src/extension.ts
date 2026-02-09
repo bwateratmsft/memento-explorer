@@ -5,7 +5,6 @@ import * as vscode from 'vscode';
 import { IMementoExplorerExtension } from './IMementoExplorerExtension';
 import { MementoFileSystemProvider } from './MementoFileSystemProvider';
 import { openMemento } from './openMemento';
-import { UserCancelledError } from './UserCancelledError';
 
 export function activate(context: vscode.ExtensionContext): IMementoExplorerExtension {
     registerCommand(context, 'memento-explorer.openGlobalMemento', () => openMemento('global'));
@@ -32,7 +31,7 @@ export function activate(context: vscode.ExtensionContext): IMementoExplorerExte
     };
 }
 
-export function deactivate(): void {}
+export function deactivate(): void { }
 
 function registerCommand(context: vscode.ExtensionContext, commandId: string, callback: () => Promise<void>): void {
     context.subscriptions.push(
@@ -40,7 +39,7 @@ function registerCommand(context: vscode.ExtensionContext, commandId: string, ca
             try {
                 await callback();
             } catch (e) {
-                if (e instanceof UserCancelledError) {
+                if (e instanceof vscode.CancellationError) {
                     return;
                 }
 
