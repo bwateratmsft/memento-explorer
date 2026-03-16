@@ -48,7 +48,7 @@
         "test": ""
     },
     "devDependencies": {
-        "@microsoft/vscode-azext-eng": "^1.0.0-alpha.12",
+        "@microsoft/vscode-azext-eng": "^1.0.0-alpha.14",
         "@types/node": "22.x",
         "@types/vscode": "1.105.0",
         "@vscode/vsce": "*",
