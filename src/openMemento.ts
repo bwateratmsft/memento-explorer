@@ -37,7 +37,7 @@ function getExtensionQuickPickItems(): ExtensionQuickPickItem[] {
     return vscode.extensions.all
         .filter(e => !e.isActive || e.exports !== undefined)
         .map(e => ({
-            label: e.packageJSON?.displayName || e.packageJSON?.name || e.id,
+            label: (e.packageJSON as { displayName?: string }).displayName || ((e.packageJSON as { name?: string }).name || e.id),
             detail: e.id,
             extensionId: e.id,
         })

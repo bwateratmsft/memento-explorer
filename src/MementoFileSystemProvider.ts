@@ -27,9 +27,9 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
     public async writeFile(uri: vscode.Uri, content: Uint8Array, options: { create: boolean; overwrite: boolean; }): Promise<void> {
         const memento = await getMemento(uri);
         const oldValue = memento.f;
-        const newValue = uint8ArrayJsonToObject(content) as Record<string, unknown>;
+        const newValue = uint8ArrayJsonToObject(content);
 
-        const diff = <DetailedDiff>detailedDiff(oldValue, newValue);
+        const diff = detailedDiff(oldValue, newValue);
 
         // Log some info on what we're about to do
         outputChannel.show();
@@ -60,19 +60,19 @@ export class MementoFileSystemProvider implements vscode.FileSystemProvider {
         throw new Error('Method not implemented.');
     }
 
-    public async readDirectory(uri: vscode.Uri): Promise<[string, vscode.FileType][]> {
+    public readDirectory(uri: vscode.Uri): Promise<[string, vscode.FileType][]> {
         throw new Error('Method not implemented.');
     }
 
-    public async createDirectory(uri: vscode.Uri): Promise<void> {
+    public createDirectory(uri: vscode.Uri): Promise<void> {
         throw new Error('Method not implemented.');
     }
 
-    public async delete(uri: vscode.Uri, options: { recursive: boolean; }): Promise<void> {
+    public delete(uri: vscode.Uri, options: { recursive: boolean; }): Promise<void> {
         throw new Error('Method not implemented.');
     }
 
-    public async rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean; }): Promise<void> {
+    public rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean; }): Promise<void> {
         throw new Error('Method not implemented.');
     }
     //#endregion Methods not valid for `MementoFileSystemProvider`
@@ -113,20 +113,14 @@ function objectToJsonUint8Array(obj: object): Uint8Array {
     );
 }
 
-function uint8ArrayJsonToObject(array: Uint8Array): object {
+function uint8ArrayJsonToObject(array: Uint8Array): Record<string, unknown> {
     const json = Buffer.from(array).toString('utf8');
 
-    return JSON.parse(json);
+    return JSON.parse(json) as Record<string, unknown>;
 }
 
 function undefinedToNull(k: string, v: unknown): unknown {
     return v === undefined ?
         null :
         v;
-}
-
-interface DetailedDiff {
-    readonly added: object;
-    readonly deleted: object;
-    readonly updated: object;
 }

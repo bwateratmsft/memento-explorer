@@ -1,6 +1,7 @@
 // Copyright Brandon Waterloo. All rights reserved.
 // Licensed under the MIT license.
 
+import * as util from 'util';
 import * as vscode from 'vscode';
 import { IMementoExplorerExtension } from './IMementoExplorerExtension';
 import { MementoFileSystemProvider } from './MementoFileSystemProvider';
@@ -31,7 +32,9 @@ export function activate(context: vscode.ExtensionContext): IMementoExplorerExte
     };
 }
 
-export function deactivate(): void { }
+export function deactivate(): void {
+    // noop
+}
 
 function registerCommand(context: vscode.ExtensionContext, commandId: string, callback: () => Promise<void>): void {
     context.subscriptions.push(
@@ -39,15 +42,16 @@ function registerCommand(context: vscode.ExtensionContext, commandId: string, ca
             try {
                 await callback();
             } catch (e) {
+                let message: string | undefined;
                 if (e instanceof vscode.CancellationError) {
                     return;
+                } else if (e instanceof Error) {
+                    message = e.message;
+                } else {
+                    message = util.inspect(e);
                 }
 
-                const error: { message: string } = {
-                    message: (e as any).message || (e as any).toString(),
-                };
-
-                vscode.window.showErrorMessage(error.message);
+                vscode.window.showErrorMessage(message);
             }
         })
     );
