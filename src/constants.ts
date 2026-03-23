@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 
 export type MementoType = 'global' | 'workspace';
 
-export type InternalMemento = vscode.Memento & { f: Record<string, unknown> };
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type InternalMemento = vscode.Memento & ({ f: Record<string, unknown> } | { _value: Record<string, unknown> });
 
 export const outputChannel = vscode.window.createOutputChannel(vscode.l10n.t('Memento Explorer'), { log: true });
