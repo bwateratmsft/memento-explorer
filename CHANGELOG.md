@@ -1,3 +1,7 @@
+## v0.1.7 (23 March 2026)
+### Fixed
+* New property name in memento caused extension to stop working.
+
 ## v0.1.6 (9 February 2026)
 ### Changed
 * Changed build to use esbuild.
